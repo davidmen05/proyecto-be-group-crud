@@ -1,0 +1,74 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col">
+      <h2 class="text-center mb-4">Be Group S.A.S.</h2>
+      <h3 class="text-center mb-4">Gestión de Servicios Contables</h3>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+      <button class="btn btn-primary" (click)="onNew()">
+        + Nuevo Servicio
+      </button>
+    </div>
+  </div>
+
+  @if (!showForm) {
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-striped table-hover">
+              <thead class="table-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (service of services; track service.id) {
+                  <tr>
+                    <td>{{ service.id }}</td>
+                    <td>{{ service.name }}</td>
+                    <td>{{ service.category }}</td>
+                    <td>{{ service.price | currency:'COP':'$' }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="service.active ? 'bg-success' : 'bg-danger'">
+                        {{ service.active ? 'Activo' : 'Inactivo' }}
+                      </span>
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-warning me-2" (click)="onEdit(service)">
+                        Editar
+                      </button>
+                      <button class="btn btn-sm btn-danger" (click)="onDelete(service.id!)">
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showForm) {
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <app-service-form 
+          [service]="selectedService"
+          (saved)="onFormSaved()"
+          (cancel)="onCancel()">
+        </app-service-form>
+      </div>
+    </div>
+  }
+</div>
